@@ -94,6 +94,16 @@ class TestProduct extends Model implements JsonSerializable
 		$db->query("update {$tx}test_products set sku='$this->sku',title='$this->title',slug='$this->slug',description='$this->description',category_id='$this->category_id',subcategory='$this->subcategory',brand_id='$this->brand_id',price='$this->price',original_price='$this->original_price',discount_percent='$this->discount_percent',rating='$this->rating',reviews_count='$this->reviews_count',stock='$this->stock',stock_status='$this->stock_status',thumbnail='$this->thumbnail',featured='$this->featured',bestseller='$this->bestseller',new_arrival='$this->new_arrival',on_sale='$this->on_sale',best_value='$this->best_value',deal_end_time=$deal_end_time,shipping_estimate='$this->shipping_estimate',warranty='$this->warranty',updated_at='$this->updated_at' where id=$productID");
 		return true;
 	}
+	public function updateStock()
+	{
+		$str = $this->id;
+		$productID = intval(substr($str, 2));
+		// Make deal_end_time NULL if empty
+		global $db, $tx;
+		$db->query("update {$tx}test_products set stock='$this->stock', updated_at='$this->updated_at' where id=$productID");
+		return true;
+	}
+
 	public static function delete($id)
 	{
 		global $db, $tx;

@@ -32,7 +32,7 @@ class TestOrderdetail extends Model implements JsonSerializable
 	public static function delete($id)
 	{
 		global $db, $tx;
-		$db->query("delete from {$tx}test_orderdetails where id={$id}");
+		$db->query("delete from {$tx}test_orderdetails where order_id={$id}");
 	}
 	public function jsonSerialize(): mixed
 	{

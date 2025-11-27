@@ -19,10 +19,14 @@ class TestOrderApi
 	function delete($data)
 	{
 		TestOrder::delete($data["id"]);
+		TestOrderdetail::delete($data["id"]);
+		TestOrderTracking::delete($data["id"]);
+		TestOrderLog::delete($data["id"]);
 		echo json_encode(["success" => "yes"]);
 	}
 	function save($data, $file = [])
 	{
+		global $now;
 		// 1. Save Order (Parent)
 		$testorder = new TestOrder();
 		$testorder->order_number         = $data["orderNumber"] ?? '';
@@ -78,6 +82,25 @@ class TestOrderApi
 				$detail->price      = $item["price"] ?? 0;
 
 				$detail->save();
+
+				// update Inventory
+				$stock = new TestProductInventory();
+				$stock->product_id = $item["product_id"] ?? $item["id"] ?? null;
+				$stock->variant_id = null;
+				$stock->stock = $item["quantity"] * -1;
+				$stock->created_at = $now;
+				$stock->updated_at =$now;
+				$stock->save();
+
+				// Update Product Stock
+				$productStock = new TestProduct();
+				$qty= TestProduct::find(substr($item["product_id"], 2))->stock -  $item["quantity"];
+				$productStock->id = $item["product_id"] ?? $item["id"] ?? null;
+				$productStock->stock = 	$qty;
+				$productStock->updated_at = $now;
+				$productStock->updateStock();
+
+
 			}
 		}
 

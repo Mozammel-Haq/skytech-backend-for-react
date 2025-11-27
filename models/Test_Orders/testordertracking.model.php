@@ -28,7 +28,7 @@ class TestOrderTracking extends Model implements JsonSerializable
 	public static function delete($id)
 	{
 		global $db, $tx;
-		$db->query("delete from {$tx}test_order_tracking where id={$id}");
+		$db->query("delete from {$tx}test_order_tracking where order_id={$id}");
 	}
 	public function jsonSerialize(): mixed
 	{
