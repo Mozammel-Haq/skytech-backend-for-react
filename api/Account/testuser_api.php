@@ -5,7 +5,7 @@ class TestUserApi
 	public function __construct() {}
 	function index()
 	{
-		echo json_encode(["all_users" => TestUser::all(), "all_customers" => TestUser::customers()]);
+		echo json_encode(["all_users" => TestUser::all()]);
 	}
 	function pagination($data)
 	{
@@ -36,8 +36,7 @@ class TestUserApi
 		$testuser->password = password_hash($data['password'], PASSWORD_BCRYPT);
 		$testuser->token = bin2hex(random_bytes(32));
 		$testuser->expiresAt = date("Y-m-d H:i:s", strtotime("+1 day"));
-
-		$testuser->save();
+		$testuser->$testuser->save();
 		echo json_encode([
 			"success" => "yes",
 			"id" => $testuser->id,

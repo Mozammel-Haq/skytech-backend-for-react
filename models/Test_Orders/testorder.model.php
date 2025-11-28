@@ -141,7 +141,7 @@ class TestOrder extends Model implements JsonSerializable
 		global $db;
 
 		// 1) Fetch all orders
-		$ordersRes = $db->query("SELECT * FROM test_orders");
+		$ordersRes = $db->query("SELECT * FROM test_orders ORDER BY placed_at DESC");
 		$orders = [];
 		while ($o = $ordersRes->fetch_assoc()) {
 			$orders[$o['id']] = [

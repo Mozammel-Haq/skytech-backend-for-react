@@ -13,11 +13,12 @@ class TestUser extends Model implements JsonSerializable
 	public $password;
 	public $token;
 	public $expiresAt;
+	public $createdAt;
 	public $skipPassword;
 
 	public function __construct() {}
 
-	public function set($id, $email, $name, $phone, $address, $city, $postal_code, $country, $role_id, $password, $token, $expiresAt, $skipPassword)
+	public function set($id, $email, $name, $phone, $address, $city, $postal_code, $country, $role_id, $password, $token, $expiresAt, $createdAt, $skipPassword)
 	{
 		$this->id = $id;
 		$this->email = $email;
@@ -31,6 +32,7 @@ class TestUser extends Model implements JsonSerializable
 		$this->password = $password;
 		$this->token = $token;
 		$this->expiresAt = $expiresAt;
+		$this->$createdAt = $createdAt;
 		$this->skipPassword = $skipPassword;
 	}
 
@@ -39,9 +41,9 @@ class TestUser extends Model implements JsonSerializable
 		global $db, $tx;
 		$db->query("
             INSERT INTO {$tx}test_users 
-                (email, name, phone, address, city, postal_code, country, role_id, password, token, expiresAt)
+                (email, name, phone, address, city, postal_code, country, role_id, password, token, expiresAt,created_at)
             VALUES
-                ('$this->email','$this->name','$this->phone','$this->address','$this->city','$this->postal_code','$this->country','$this->role_id','$this->password','$this->token','$this->expiresAt')
+                ('$this->email','$this->name','$this->phone','$this->address','$this->city','$this->postal_code','$this->country','$this->role_id','$this->password','$this->token','$this->expiresAt','$this->createdAt')
         ");
 		return $db->insert_id;
 	}
@@ -100,7 +102,8 @@ class TestUser extends Model implements JsonSerializable
                 u.country,
                 r.name AS role,
                 u.token,
-                u.expiresAt
+                u.expiresAt,
+				u.created_at
             FROM {$tx}test_users AS u
             LEFT JOIN {$tx}test_roles AS r
                 ON u.role_id = r.id
@@ -128,7 +131,8 @@ class TestUser extends Model implements JsonSerializable
                 u.country,
                 r.name AS role,
                 u.token,
-                u.expiresAt
+                u.expiresAt,
+				u.created_at
             FROM {$tx}test_users AS u
             LEFT JOIN {$tx}test_roles AS r
                 ON u.role_id = r.id
