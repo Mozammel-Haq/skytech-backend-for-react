@@ -24,6 +24,7 @@ class TestUserApi
 	}
 	function save($data, $file = [])
 	{
+		global $now;
 		$testuser = new TestUser();
 		$testuser->email = $data["email"];
 		$testuser->name = $data["name"];
@@ -36,7 +37,8 @@ class TestUserApi
 		$testuser->password = password_hash($data['password'], PASSWORD_BCRYPT);
 		$testuser->token = bin2hex(random_bytes(32));
 		$testuser->expiresAt = date("Y-m-d H:i:s", strtotime("+1 day"));
-		$testuser->$testuser->save();
+		$testuser->createdAt = $now;
+		$testuser->save();
 		echo json_encode([
 			"success" => "yes",
 			"id" => $testuser->id,
@@ -49,7 +51,8 @@ class TestUserApi
 			"country" => $testuser->country,
 			"role_id" => $testuser->role_id,
 			"token" => $testuser->token,
-			"expiresAt" => $testuser->expiresAt
+			"expiresAt" => $testuser->expiresAt,
+			"createdAt" => $testuser->createdAt
 		]);
 	}
 
@@ -67,7 +70,7 @@ class TestUserApi
 		$testuser->role_id = $data["role_id"] ?? 3; // default role_id
 		$testuser->token = $data["token"] ?? bin2hex(random_bytes(32));
 		$testuser->expiresAt = $data["expiresAt"] ?? date("Y-m-d H:i:s", strtotime("+1 day"));
-
+		
 
 		// Only update password if a new one is provided
 		if (!empty($data['password'])) {

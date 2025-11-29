@@ -23,7 +23,8 @@ class TestDashboardApi
 
             // other analytics
             'topProducts' => TestDashboard::top_products(),
-            'customerGrowth' => TestDashboard::customer_analytics(),
+            'customerGrowth' => TestDashboard::customer_analytics('monthly'),
+'customerGrowthDaily' => TestDashboard::customer_analytics('daily'),
             'recentOrders' => TestDashboard::recent_orders(5)
         ];
 

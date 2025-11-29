@@ -109,26 +109,35 @@ class TestDashboard extends Model
     }
 
 
-    public static function customer_analytics()
-    {
-        global $db, $tx;
-        $data = [];
+    public static function customer_analytics($type = 'monthly') {
+    global $db, $tx;
+    $data = [];
+    if($type === 'monthly') {
         $res = $db->query("
-            SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym,
-                   COUNT(*) AS new_customers
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym, COUNT(*) AS new_customers
             FROM {$tx}test_users
             WHERE role_id=3
             GROUP BY DATE_FORMAT(created_at, '%Y-%m')
             ORDER BY ym ASC
         ");
-        while ($row = $res->fetch_object()) {
-            $data[] = [
-                'ym' => $row->ym,
-                'new_customers' => (int)$row->new_customers
-            ];
+        while($row = $res->fetch_object()) {
+            $data[] = ['ym'=>$row->ym, 'new_customers'=>(int)$row->new_customers];
         }
-        return $data;
+    } else {
+        $res = $db->query("
+            SELECT DATE(created_at) AS day, COUNT(*) AS new_customers
+            FROM {$tx}test_users
+            WHERE role_id=3
+            GROUP BY DATE(created_at)
+            ORDER BY day ASC
+        ");
+        while($row = $res->fetch_object()) {
+            $data[] = ['day'=>$row->day, 'new_customers'=>(int)$row->new_customers];
+        }
     }
+    return $data;
+}
+
 
     public static function recent_orders($limit = 5)
     {
