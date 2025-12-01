@@ -38,10 +38,10 @@ class TestUserApi
 		$testuser->token = bin2hex(random_bytes(32));
 		$testuser->expiresAt = date("Y-m-d H:i:s", strtotime("+1 day"));
 		$testuser->createdAt = $now;
-		$testuser->save();
+		$user_id = $testuser->save();
 		echo json_encode([
 			"success" => "yes",
-			"id" => $testuser->id,
+			"id" => $user_id,
 			"email" => $testuser->email,
 			"name" => $testuser->name,
 			"phone" => $testuser->phone,
