@@ -124,7 +124,7 @@ class TestProduct extends Model implements JsonSerializable
             c.name AS category_name, c.slug AS category_slug,
             b.name AS brand_name, b.logo AS brand_logo,
             p.price, p.original_price, p.discount_percent,
-            p.rating, p.reviews_count, p.stock, p.stock_status, p.thumbnail,
+            (SELECT ROUND(AVG(r.rating),2) FROM test_product_reviews r WHERE r.product_id = p.id) AS rating, (SELECT COUNT(*) FROM test_product_reviews r WHERE r.product_id = p.id) AS reviews_count, p.stock, p.stock_status, p.thumbnail,
             p.featured, p.bestseller, p.new_arrival, p.on_sale, p.best_value,
             p.deal_end_time, p.shipping_estimate, p.warranty
         FROM {$tx}test_products p

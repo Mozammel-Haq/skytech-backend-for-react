@@ -33,7 +33,7 @@ class TestUserApi
 		$testuser->city = $data["city"] ?? '';
 		$testuser->postal_code = $data["postal_code"] ?? '';
 		$testuser->country = $data["country"] ?? '';
-		$testuser->role_id = $data["role_id"];
+		$testuser->role_id = $data["role_id"] ?? 3;
 		$testuser->password = password_hash($data['password'], PASSWORD_BCRYPT);
 		$testuser->token = bin2hex(random_bytes(32));
 		$testuser->expiresAt = date("Y-m-d H:i:s", strtotime("+1 day"));
@@ -70,7 +70,7 @@ class TestUserApi
 		$testuser->role_id = $data["role_id"] ?? 3; // default role_id
 		$testuser->token = $data["token"] ?? bin2hex(random_bytes(32));
 		$testuser->expiresAt = $data["expiresAt"] ?? date("Y-m-d H:i:s", strtotime("+1 day"));
-		
+
 
 		// Only update password if a new one is provided
 		if (!empty($data['password'])) {
