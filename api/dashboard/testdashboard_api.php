@@ -11,8 +11,8 @@ class TestDashboardApi
             // basic stats
             'totalProducts' => TestDashboard::total_products(),
             'totalOrders' => TestDashboard::total_orders(),
-            'deliveredOrders' => TestDashboard::total_orders('shipped'),
-            'pendingOrders' => TestDashboard::total_orders() - TestDashboard::total_orders('shipped'),
+            'deliveredOrders' => TestDashboard::total_orders('delivered'),
+            'pendingOrders' => TestDashboard::total_orders() - TestDashboard::total_orders('delivered'),
             'totalRevenue' => TestDashboard::total_revenue(),
             'totalAdmins' => TestDashboard::total_users(2),
             'totalCustomers' => TestDashboard::total_users(3),
