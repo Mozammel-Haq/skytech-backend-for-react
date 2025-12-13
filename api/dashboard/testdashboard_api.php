@@ -11,8 +11,8 @@ class TestDashboardApi
             // basic stats
             'totalProducts' => TestDashboard::total_products(),
             'totalOrders' => TestDashboard::total_orders(),
-            'deliveredOrders' => TestDashboard::total_orders('delivered'),
-            'pendingOrders' => TestDashboard::total_orders() - TestDashboard::total_orders('delivered'),
+            'deliveredOrders' => TestDashboard::total_orders('shipped'),
+            'pendingOrders' => TestDashboard::total_orders() - TestDashboard::total_orders('shipped'),
             'totalRevenue' => TestDashboard::total_revenue(),
             'totalAdmins' => TestDashboard::total_users(2),
             'totalCustomers' => TestDashboard::total_users(3),
@@ -24,7 +24,7 @@ class TestDashboardApi
             // other analytics
             'topProducts' => TestDashboard::top_products(),
             'customerGrowth' => TestDashboard::customer_analytics('monthly'),
-'customerGrowthDaily' => TestDashboard::customer_analytics('daily'),
+            'customerGrowthDaily' => TestDashboard::customer_analytics('daily'),
             'recentOrders' => TestDashboard::recent_orders(5)
         ];
 
