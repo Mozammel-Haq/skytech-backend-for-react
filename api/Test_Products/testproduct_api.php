@@ -277,85 +277,85 @@ class TestProductApi
 		// 2) Gallery images
 		// -------------------------
 		// -------------------------
-// 2) Gallery images
-// -------------------------
-$allImages = [];
+		// 2) Gallery images
+		// -------------------------
+		$allImages = [];
 
-// Collect uploaded files first (same as your current code)
-if (!empty($file['galleryFiles']['name']) && is_array($file['galleryFiles']['name'])) {
-    foreach ($file['galleryFiles']['tmp_name'] as $index => $tmp) {
-        $imgFile = [
-            'name' => $file["galleryFiles"]["name"][$index],
-            'tmp_name' => $file["galleryFiles"]["tmp_name"][$index],
-            'size' => $file["galleryFiles"]["size"][$index],
-            'error' => $file["galleryFiles"]["error"][$index],
-            'type' => $file["galleryFiles"]["type"][$index],
-        ];
-        $path = upload($imgFile, "../test_assets/img/products/");
-        if ($path) $allImages[] = ['id' => null, 'path' => $path];
-    }
-}
+		// Collect uploaded files first (same as your current code)
+		if (!empty($file['galleryFiles']['name']) && is_array($file['galleryFiles']['name'])) {
+			foreach ($file['galleryFiles']['tmp_name'] as $index => $tmp) {
+				$imgFile = [
+					'name' => $file["galleryFiles"]["name"][$index],
+					'tmp_name' => $file["galleryFiles"]["tmp_name"][$index],
+					'size' => $file["galleryFiles"]["size"][$index],
+					'error' => $file["galleryFiles"]["error"][$index],
+					'type' => $file["galleryFiles"]["type"][$index],
+				];
+				$path = upload($imgFile, "../test_assets/img/products/");
+				if ($path) $allImages[] = ['id' => null, 'path' => $path];
+			}
+		}
 
-// Existing gallery from frontend
-foreach (decodeArray($data["gallery"] ?? []) as $g) {
-    $imgId = isset($g['id']) ? normalizeId($g['id']) : null;
-    $imgPath = is_array($g) ? ($g['name'] ?? ($g['path'] ?? null)) : $g;
-    if ($imgPath !== null) $allImages[] = ['id' => $imgId, 'path' => $imgPath];
-}
+		// Existing gallery from frontend
+		foreach (decodeArray($data["gallery"] ?? []) as $g) {
+			$imgId = isset($g['id']) ? normalizeId($g['id']) : null;
+			$imgPath = is_array($g) ? ($g['name'] ?? ($g['path'] ?? null)) : $g;
+			if ($imgPath !== null) $allImages[] = ['id' => $imgId, 'path' => $imgPath];
+		}
 
-// Sync all images in DB
-$imageModel = new TestProductImage();
-$imageModel->product_id = $product_id;
-$imageModel->update($allImages);  // now handles insert/update/delete
+		// Sync all images in DB
+		$imageModel = new TestProductImage();
+		$imageModel->product_id = $product_id;
+		$imageModel->update($allImages);  // now handles insert/update/delete
 
 
 		// -------------------------
 		// 3) Variants
 		// -------------------------
 		$variantModel = new TestProductVariant();
-$variantModel->product_id = $product_id;
-$variantModel->update(decodeArray($data["variants"] ?? []));
+		$variantModel->product_id = $product_id;
+		$variantModel->update(decodeArray($data["variants"] ?? []));
 		// -------------------------
 		// 4) Specifications
 		// -------------------------
 		$specModel = new TestProductSpec();
-$specModel->product_id = $product_id;
-$specModel->update(decodeArray($data["specs"] ?? []));
+		$specModel->product_id = $product_id;
+		$specModel->update(decodeArray($data["specs"] ?? []));
 
 		// -------------------------
 		// 5) Highlights
 		// -------------------------
 		$highlightModel = new TestProductHighlight();
-$highlightModel->product_id = $product_id;
-$highlightModel->update(decodeArray($data["highlights"] ?? []));
+		$highlightModel->product_id = $product_id;
+		$highlightModel->update(decodeArray($data["highlights"] ?? []));
 
 		// -------------------------
 		// 6) Tags
 		// -------------------------
 		$tagModel = new TestProductTag();
-$tagModel->product_id = $product_id;
-$tagModel->update(decodeArray($data["tags"] ?? []));
+		$tagModel->product_id = $product_id;
+		$tagModel->update(decodeArray($data["tags"] ?? []));
 
 		// -------------------------
 		// 7) Badges
 		// -------------------------
 		$badgeModel = new TestProductBadge();
-$badgeModel->product_id = $product_id;
-$badgeModel->update(decodeArray($data["badges"] ?? []));
+		$badgeModel->product_id = $product_id;
+		$badgeModel->update(decodeArray($data["badges"] ?? []));
 		// -------------------------
 		// 8) Related products
 		// -------------------------
 		$relModel = new TestProductRelation();
-$relModel->product_id = $product_id;
-$relModel->update(decodeArray($data["relatedIds"] ?? []));
+		$relModel->product_id = $product_id;
+		$relModel->update(decodeArray($data["relatedIds"] ?? []));
 
 
 		// -------------------------
 		// 9) Recommended products
 		// -------------------------
 		$recModel = new TestProductRecommendation();
-$recModel->product_id = $product_id;
-$recModel->update(decodeArray($data["recommendedIds"] ?? []));
+		$recModel->product_id = $product_id;
+		$recModel->update(decodeArray($data["recommendedIds"] ?? []));
 
 
 		// -------------------------
@@ -370,46 +370,4 @@ $recModel->update(decodeArray($data["recommendedIds"] ?? []));
 			"file_keys" => array_keys($file)
 		]);
 	}
-
-
-
-
-
-
-
-	// function update($data, $file = [])
-	// {
-	// 	$testproduct = new TestProduct();
-	// 	$testproduct->id = $data["id"];
-	// 	$testproduct->sku = $data["sku"];
-	// 	$testproduct->title = $data["title"];
-	// 	if (isset($file["slug"]["name"])) {
-	// 		$testproduct->slug = upload($file["slug"], "../img", $data["title"]);
-	// 	} else {
-	// 		$testproduct->slug = TestProduct::find($data["id"])->slug;
-	// 	}
-	// 	$testproduct->description = $data["description"];
-	// 	$testproduct->category = $data["category"];
-	// 	$testproduct->category_slug = $data["category_slug"];
-	// 	$testproduct->subcategory = $data["subcategory"];
-	// 	$testproduct->brand = $data["brand"];
-	// 	$testproduct->brand_slug = $data["brand_slug"];
-	// 	$testproduct->reviews_count = $data["reviews_count"];
-	// 	$testproduct->stock = $data["stock"];
-	// 	$testproduct->stock_status = $data["stock_status"];
-	// 	$testproduct->thumbnail = $data["thumbnail"];
-	// 	$testproduct->featured = $data["featured"];
-	// 	$testproduct->bestseller = $data["bestseller"];
-	// 	$testproduct->new_arrival = $data["new_arrival"];
-	// 	$testproduct->on_sale = $data["on_sale"];
-	// 	$testproduct->best_value = $data["best_value"];
-	// 	$testproduct->deal_end_time = $data["deal_end_time"];
-	// 	$testproduct->shipping_estimate = $data["shipping_estimate"];
-	// 	$testproduct->warranty = $data["warranty"];
-	// 	$testproduct->created_at = $data["created_at"];
-	// 	$testproduct->updated_at = $data["updated_at"];
-
-	// 	$testproduct->update();
-	// 	echo json_encode(["success" => "yes"]);
-	// }
 }
